@@ -2,22 +2,27 @@ import io
 import streamlit as st
 from PIL import Image
 import numpy as np
-from tensorflow.keras.applications import EfficientNetB1
+from tensorflow.keras.applications import EfficientNetB0
+from tensorflow.keras.applications import EfficientNetB3
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.efficientnet import preprocess_input, decode_predictions
 
 
 @st.cache(allow_output_mutation=True)
 def load_model():
-    return EfficientNetB1(weights='imagenet')
+    return [EfficientNetB0(weights='imagenet'), EfficientNetB3(weights='imagenet')]
 
 
-def preprocess_image(img):
-    img = img.resize((240, 240))
+def preprocess_image(img0):
+    img = img0.resize((224, 224)) # Размер изображения для 0-224, 1-240, 3-300, 4-380, 7-600 точек
+    img1 = img0.resize((300, 300))
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)
-    return x
+    x1 = image.img_to_array(img1)
+    x1 = np.expand_dims(x1, axis=0)
+    x1 = preprocess_input(x1)
+    return [x, x1]
 
 
 def load_image():
@@ -31,19 +36,22 @@ def load_image():
 
 
 def print_predictions(preds):
-    classes = decode_predictions(preds, top=3)[0]
+    classes = decode_predictions(preds, top=5)[0]
     for cl in classes:
         st.write(cl[1], cl[2])
 
 
-model = load_model()
+[model, model1] = load_model()
 
 
-st.title('Новая улучшенная классификации изображений в облаке Streamlit')
+st.title('Тест классификации изображений в облаке Streamlit')
 img = load_image()
 result = st.button('Распознать изображение')
 if result:
-    x = preprocess_image(img)
+    [x, x1] = preprocess_image(img)
     preds = model.predict(x)
-    st.write('**Результаты распознавания:**')
+    preds1 = model1.predict(x1)
+    st.write('**Результаты распознавания для EfficientNetB0:**')
     print_predictions(preds)
+    st.write('**Результаты распознавания для EfficientNetB3:**')
+    print_predictions(preds1)
