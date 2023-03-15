@@ -44,7 +44,7 @@ def print_predictions(preds):
 [model, model1] = load_model()
 
 
-st.title('Тест классификации изображений в облаке Streamlit')
+st.title('Тест сравнения точности классификации изображений в зависимости от размера обученной сети в облаке Streamlit')
 img = load_image()
 result = st.button('Распознать изображение')
 if result:
