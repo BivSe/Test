@@ -2,7 +2,7 @@ import io
 import streamlit as st
 from PIL import Image
 import numpy as np
-from tensorflow.keras.applications import EfficientNetB0
+from tensorflow.keras.applications import EfficientNetB7
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.efficientnet import preprocess_input, decode_predictions
 
@@ -13,7 +13,7 @@ def load_model():
 
 
 def preprocess_image(img):
-    img = img.resize((224, 224))
+    img = img.resize((600, 600))
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)
