@@ -13,13 +13,16 @@ def load_model():
     return [EfficientNetB0(weights='imagenet'), EfficientNetB1(weights='imagenet')]
 
 
-def preprocess_image(img):
-    img = img.resize((224, 224))
-    img1 = img.resize((240, 240))
+def preprocess_image(img0):
+    img = img0.resize((224, 224))
+    img1 = img0.resize((240, 240))
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)
-    return x
+    x1 = image.img_to_array(img1)
+    x1 = np.expand_dims(x1, axis=0)
+    x1 = preprocess_input(x1)
+    return [x, x1]
 
 
 def load_image():
@@ -45,9 +48,9 @@ st.title('Тест классификации изображений в обла
 img = load_image()
 result = st.button('Распознать изображение')
 if result:
-    x = preprocess_image(img)
+    [x, x1] = preprocess_image(img)
     preds = model.predict(x)
-    preds1 = model1.predict(x)
+    preds1 = model1.predict(x1)
     st.write('**Результаты распознавания для EfficientNetB0:**')
     print_predictions(preds)
     st.write('**Результаты распознавания для EfficientNetB1:**')
