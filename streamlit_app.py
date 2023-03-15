@@ -3,18 +3,19 @@ import streamlit as st
 from PIL import Image
 import numpy as np
 from tensorflow.keras.applications import EfficientNetB0
-from tensorflow.keras.applications import EfficientNetB7
+from tensorflow.keras.applications import EfficientNetB1
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.efficientnet import preprocess_input, decode_predictions
 
 
 @st.cache(allow_output_mutation=True)
 def load_model():
-    return [EfficientNetB0(weights='imagenet'), EfficientNetB7(weights='imagenet')]
+    return [EfficientNetB0(weights='imagenet'), EfficientNetB1(weights='imagenet')]
 
 
 def preprocess_image(img):
     img = img.resize((224, 224))
+    img1 = img.resize((240, 240))
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)
@@ -37,7 +38,7 @@ def print_predictions(preds):
         st.write(cl[1], cl[2])
 
 
-[model, model7] = load_model()
+[model, model1] = load_model()
 
 
 st.title('Тест классификации изображений в облаке Streamlit')
@@ -46,8 +47,8 @@ result = st.button('Распознать изображение')
 if result:
     x = preprocess_image(img)
     preds = model.predict(x)
-    preds7 = model7.predict(x)
+    preds1 = model1.predict(x)
     st.write('**Результаты распознавания для EfficientNetB0:**')
     print_predictions(preds)
-    st.write('**Результаты распознавания для EfficientNetB7:**')
-    print_predictions(preds7)
+    st.write('**Результаты распознавания для EfficientNetB1:**')
+    print_predictions(preds1)
