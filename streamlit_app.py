@@ -9,7 +9,7 @@ from tensorflow.keras.applications.efficientnet import preprocess_input, decode_
 
 @st.cache(allow_output_mutation=True)
 def load_model():
-    return EfficientNetB0(weights='imagenet')
+    return EfficientNetB7(weights='imagenet')
 
 
 def preprocess_image(img):
