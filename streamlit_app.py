@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from transformers import pipeline
 from pydantic import BaseModel
 import io
 import streamlit as st
@@ -18,16 +17,12 @@ class Item(BaseModel):
 app = FastAPI()
 
 
-@app.get("/")
-def root():
-    return {"message": "Hello World"}
-
-
 @st.cache(allow_output_mutation=True)
 def load_model():
     return [EfficientNetB0(weights='imagenet'), EfficientNetB3(weights='imagenet')]
 
 
+@app.get("/")
 def tests(urls_img):
     return {"Key": "True"}
 
@@ -60,7 +55,6 @@ def print_predictions(preds):
         st.write(cl[1], cl[2])
 
 
-app = FastAPI()
 [model, model1] = load_model()
 
 
