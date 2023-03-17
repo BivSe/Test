@@ -24,6 +24,7 @@ def load_model():
 
 @app.get("/")
 def tests(urls_img):
+    st.title('Тест в облаке Streamlit')
     return {"Key": "True"}
 
 
