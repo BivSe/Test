@@ -1,3 +1,6 @@
+from fastapi import FastAPI
+from transformers import pipeline
+from pydantic import BaseModel
 import io
 import streamlit as st
 from PIL import Image
@@ -6,6 +9,15 @@ from tensorflow.keras.applications import EfficientNetB0
 from tensorflow.keras.applications import EfficientNetB3
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.efficientnet import preprocess_input, decode_predictions
+
+
+class Item(BaseModel):
+    text: str
+
+
+@app.get("/")
+def root():
+    return {"message": "Hello World"}
 
 
 @st.cache(allow_output_mutation=True)
@@ -45,6 +57,7 @@ def print_predictions(preds):
         st.write(cl[1], cl[2])
 
 
+app = FastAPI()
 [model, model1] = load_model()
 
 
