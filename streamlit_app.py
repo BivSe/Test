@@ -53,7 +53,7 @@ def load_image():
 def print_predictions(preds):
     classes = decode_predictions(preds, top=5)[0]
     for cl in classes:
-        st.write(cl[1], cl[2])
+        st.write(cl[1], str(int(cl[2]*100) + " %"))
 
 
 [model, model1] = load_model()
