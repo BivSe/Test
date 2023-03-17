@@ -13,6 +13,10 @@ def load_model():
     return [EfficientNetB0(weights='imagenet'), EfficientNetB3(weights='imagenet')]
 
 
+def tests(urls_img):
+    return {"Key": "True"}
+
+
 def preprocess_image(img0):
     img = img0.resize((224, 224))  # Размер изображения для 0-224, 1-240, 3-300, 4-380, 7-600 точек
     img1 = img0.resize((300, 300))
