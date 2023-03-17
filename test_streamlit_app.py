@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
-# from streamlit_app import tests
-import streamlit_app
+from streamlit_app import tests
+# import streamlit_app
 
 app = tests("Проверка")
 client = TestClient(app)
